@@ -38,6 +38,11 @@ jobs:
         run: |
           python EGS-E.py # Pastikan `script.py` adalah nama file Python Anda
 
+      # Configure Rclone
+      - name: Configure Rclone
+        run: |
+          echo '${{ secrets.RCLONE_CONFIG }}' > rclone.conf
+
       # Unggah file XML ke remote menggunakan rclone
       - name: Upload to Remote
         env:
