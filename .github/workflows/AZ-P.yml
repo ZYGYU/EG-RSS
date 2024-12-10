@@ -1,0 +1,32 @@
+name: Post Amazon RSS to Telegram
+
+on:
+  schedule:
+    - cron: "* * * * *"  # Jalankan setiap jam
+  workflow_dispatch:
+
+jobs:
+  post-to-telegram:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: amazonpg # Menggunakan branch sebagai kunci concurrency
+      cancel-in-progress: true
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Install Python Dependencies
+      run: |
+        pip install feedparser pymongo dnspython requests beautifulsoup4 lxml
+
+    - name: Run RSS to Telegram Script
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      run: python AZ-P.py
