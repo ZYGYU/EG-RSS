@@ -31,17 +31,17 @@ jobs:
         run: |
          sudo -v ; curl https://rclone.org/install.sh | sudo bash -s beta 
 
+      # Configure Rclone
+      - name: Configure Rclone
+        run: |
+          echo '${{ secrets.RCLONE_CONFIG }}' > rclone.conf
+
       # Generate RSS Feed
       - name: Generate RSS Feed
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }} # MongoDB URI dari Secrets
         run: |
           python EGS-E.py # Pastikan `script.py` adalah nama file Python Anda
-
-      # Configure Rclone
-      - name: Configure Rclone
-        run: |
-          echo '${{ secrets.RCLONE_CONFIG }}' > rclone.conf
 
       # Unggah file XML ke remote menggunakan rclone
       - name: Upload to Remote
